@@ -1,0 +1,94 @@
+.form-panel {
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 210, 40, 0.06);
+  border-radius: 18px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+}
+
+.panel-hover {
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+.panel-hover:hover {
+  transform: translateY(-6px);
+}
+
+/* Floating inputs */
+.floating-field {
+  position: relative;
+}
+
+.floating-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  padding: 14px;
+  padding-top: 20px;
+  background: rgba(0, 0, 0, 0.28);
+  color: #f7e9b0;
+  border: 1px solid rgba(255, 210, 40, 0.12);
+  box-shadow: 0 0 18px rgba(255, 210, 40, 0.05) inset;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.26s ease, box-shadow 0.26s ease;
+}
+.floating-input::placeholder {
+  color: transparent;
+}
+
+.floating-input:focus {
+  border-color: rgba(255, 210, 40, 0.32);
+  box-shadow: 0 0 18px rgba(255, 210, 40, 0.06) inset, 0 0 6px rgba(255, 210, 40, 0.15);
+}
+
+/* Floating label */
+.floating-label {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  font-size: 15px;
+  color: rgba(247, 233, 176, 0.7);
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown) + .floating-label {
+  transform: translateY(-22px) scale(0.95);
+  color: #ffd200;
+}
+
+/* Register button */
+.btn-register {
+  display: block;
+  width: 100%;
+  margin-top: 32px;
+  background: linear-gradient(180deg, #ffd200 0%, #ffcf3a 100%);
+  color: #111;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 8px 22px rgba(255, 210, 40, 0.12);
+}
+.btn-register:hover {
+  transform: translateY(-3px);
+}
+.btn-register:active {
+  transform: translateY(1px);
+}
+
+/* Focus ring accessibility */
+.floating-input:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(255, 210, 40, 0.2);
+  outline-offset: 1px;
+}

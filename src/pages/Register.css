@@ -1,0 +1,67 @@
+.register-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+#background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(#041024, #000);
+}
+
+.register-box {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid cyan;
+  border-radius: 12px;
+  padding: 40px;
+  width: 340px;
+  margin: 80px auto;
+  text-align: center;
+  box-shadow: 0 0 20px cyan;
+  backdrop-filter: blur(6px);
+}
+
+.register-box h2 {
+  color: cyan;
+  font-weight: 700;
+}
+
+.register-box input,
+.register-box select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid cyan;
+  border-radius: 6px;
+  color: white;
+}
+
+.register-box button {
+  background: cyan;
+  color: #000;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.register-box button:hover {
+  background: #00ffffb0;
+}
+
+.login a {
+  color: cyan;
+  text-decoration: none;
+}
