@@ -21,9 +21,10 @@ type Props = {
 };
 
 const base = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 8000,
-});
+})
+
 
 const ProfileCard: React.FC<Props> = ({ user, onUpdated }) => {
   const [editing, setEditing] = useState(false);

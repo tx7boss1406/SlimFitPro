@@ -86,7 +86,7 @@ const getPlateForReward = (reward: Reward) => {
     if (!userId) return;
     const fetchRewards = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/rewards/${userId}`);
+        const res = await fetch(`https://slimfitpro-backend.onrender.com/rewards/${userId}`);
         const data = await res.json();
 
         // ✅ aplica a imagem da placa automaticamente
@@ -106,7 +106,7 @@ const getPlateForReward = (reward: Reward) => {
   const claimReward = async (rewardId: number) => {
     if (!userId) return;
     try {
-      const res = await fetch("http://localhost:5000/rewards/claim", {
+      const res = await fetch("https://slimfitpro-backend.onrender.com/rewards/claim", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, rewardId }),

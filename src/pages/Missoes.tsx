@@ -37,8 +37,8 @@ const userId = userData?.id || 1;
 
 
   const fetchMissoes = async () => {
-    try {
-      const res = await fetch(`http://localhost:5000/missions/user/${userId}`);
+   try {
+      const res = await fetch(`https://slimfitpro-backend.onrender.com/missions/user/${userId}`);
       const data = await res.json();
 
       setMissoes(data);
@@ -60,7 +60,7 @@ const userId = userData?.id || 1;
 
   const handleConcluir = async (missionId: number) => {
     try {
-      await fetch(`http://localhost:5000/missions/complete`, {
+      await fetch(`https://slimfitpro-backend.onrender.com/missions/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, missionId }),
@@ -73,7 +73,6 @@ const userId = userData?.id || 1;
       console.error("Erro ao concluir missão:", err);
     }
   };
-
   // 🔹 Contador regressivo para a próxima missão apenas
   useEffect(() => {
     if (!nextMissionId) {

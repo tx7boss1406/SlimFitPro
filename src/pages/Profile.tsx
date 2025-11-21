@@ -20,7 +20,7 @@ type User = {
 };
 
 const base = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://slimfitpro-backend.onrender.com",
   timeout: 8000,
 });
 
@@ -39,7 +39,7 @@ const ProfilePage: React.FC = () => {
         setLoading(false);
         return;
       }
-      const res = await base.get("/users/profile", {
+      const res = await base.get("/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);

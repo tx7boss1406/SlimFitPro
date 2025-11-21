@@ -110,7 +110,7 @@ const Home: React.FC = () => {
 
       try {
         // summary (obrigatório)
-        const sRes = await fetch(`http://localhost:5000/users/${userId}/summary`);
+        const sRes = await fetch(`https://slimfitpro-backend.onrender.com/users/${userId}/summary`);
         if (sRes.ok) {
           const sData: SummaryResponse = await sRes.json();
           setSummary(sData);
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
 
         // rewards (conquistas / placas)
         try {
-          const rRes = await fetch(`http://localhost:5000/rewards/${userId}`);
+          const rRes = await fetch(`https://slimfitpro-backend.onrender.com/rewards/${userId}`);
           if (rRes.ok) {
             const rData: Reward[] = await rRes.json();
             setRewards(
@@ -135,7 +135,7 @@ const Home: React.FC = () => {
 
         // optional: recent activities (if endpoint exists)
         try {
-          const aRes = await fetch(`http://localhost:5000/users/${userId}/activities?limit=6`);
+          const aRes = await fetch(`https://slimfitpro-backend.onrender.com/users/${userId}/activities?limit=6`);
           if (aRes.ok) {
             const aData = await aRes.json();
             if (Array.isArray(aData)) setActivities(aData);
@@ -146,7 +146,7 @@ const Home: React.FC = () => {
 
         // optional: goals
         try {
-          const gRes = await fetch(`http://localhost:5000/users/${userId}/goals`);
+          const gRes = await fetch(`https://slimfitpro-backend.onrender.com/users/${userId}/goals`);
           if (gRes.ok) {
             const gData = await gRes.json();
             if (Array.isArray(gData)) setGoals(gData);
@@ -157,7 +157,7 @@ const Home: React.FC = () => {
 
         // optional: macros/nutrition
         try {
-          const nRes = await fetch(`http://localhost:5000/users/${userId}/nutrition/today`);
+          const nRes = await fetch(`https://slimfitpro-backend.onrender.com/users/${userId}/nutrition/today`);
           if (nRes.ok) {
             const nData = await nRes.json();
             if (nData) setMacros(nData);
@@ -174,6 +174,7 @@ const Home: React.FC = () => {
 
     fetchAll();
   }, [userId]);
+
 
   // monta cards principais (usa summary quando disponível)
   useEffect(() => {
