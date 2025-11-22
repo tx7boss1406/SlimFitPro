@@ -33,17 +33,15 @@ export default function Missoes() {
   const [nextMissionId, setNextMissionId] = useState<number | null>(null);
 
   const userData = JSON.parse(localStorage.getItem("user") || "{}");
-const userId = userData?.id || 1;
-
+  const userId = userData?.id || 1;
 
   const fetchMissoes = async () => {
-   try {
+    try {
       const res = await fetch(`https://slimfitpro-backend.onrender.com/missions/user/${userId}`);
       const data = await res.json();
 
       setMissoes(data);
 
-      // 🔹 Descobre a próxima missão a desbloquear
       const ultimaConcluidaIndex = data.findIndex((m: Missao) => m.status === "Concluída");
       const proxima = data[ultimaConcluidaIndex + 1];
       if (proxima && proxima.unlockAvailableAt) {
@@ -73,7 +71,7 @@ const userId = userData?.id || 1;
       console.error("Erro ao concluir missão:", err);
     }
   };
-  // 🔹 Contador regressivo para a próxima missão apenas
+
   useEffect(() => {
     if (!nextMissionId) {
       setTempoRestante(null);
@@ -87,7 +85,6 @@ const userId = userData?.id || 1;
       const diff = new Date(proxima.unlockAvailableAt!).getTime() - Date.now();
 
       if (diff <= 0) {
-        // libera missão automaticamente
         setMissoes((prev) =>
           prev.map((m) =>
             m.id === nextMissionId ? { ...m, status: "Disponível" } : m
@@ -138,28 +135,27 @@ const userId = userData?.id || 1;
           gravity={0.3}
         />
       )}
+
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col ml-20 md:ml-64">
         <Navbar />
 
-        <main className="flex-1 overflow-y-auto p-8">
-          {/* Cabeçalho */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center mb-8"
           >
-            <h2 className="text-4xl font-extrabold text-yellow-400 mb-3">
+            <h2 className="text-2xl md:text-4xl font-extrabold text-yellow-400 mb-3">
               🎯 Missões Diárias
             </h2>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 text-sm md:text-base">
               Complete missões e desbloqueie recompensas exclusivas!
             </p>
           </motion.div>
 
-          {/* Painel de progresso */}
-          <div className="max-w-3xl mx-auto mb-10 p-6 bg-gray-900/70 border border-yellow-400/10 rounded-2xl shadow-sm backdrop-blur-sm">
+          <div className="max-w-3xl mx-auto mb-10 p-4 md:p-6 bg-gray-900/70 border border-yellow-400/10 rounded-2xl shadow-sm backdrop-blur-sm">
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm text-gray-300">
                 Missões concluídas:{" "}
@@ -179,8 +175,7 @@ const userId = userData?.id || 1;
             </div>
           </div>
 
-          {/* Lista de missões */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
             {missoes.map((m, index) => (
               <motion.div
                 key={m.id}
@@ -188,9 +183,10 @@ const userId = userData?.id || 1;
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 onClick={() =>
-                  m.status !== "Bloqueada" && (setSelectedMission(m), setShowModal(true))
+                  m.status !== "Bloqueada" &&
+                  (setSelectedMission(m), setShowModal(true))
                 }
-                className={`relative p-6 rounded-2xl border shadow-md hover:scale-[1.02] cursor-pointer transition-all duration-300 ${
+                className={`relative p-5 rounded-2xl border shadow-md hover:scale-[1.02] cursor-pointer transition-all duration-300 ${
                   m.status === "Concluída"
                     ? "bg-gradient-to-br from-green-500/10 to-green-400/5 border-green-400/40"
                     : m.status === "Disponível"
@@ -214,12 +210,13 @@ const userId = userData?.id || 1;
                 </p>
 
                 <div className="text-xs text-gray-400 flex justify-between items-center">
-                  {/* 🔥 contador só aparece na próxima missão */}
-                  {m.status === "Bloqueada" && m.id === nextMissionId && tempoRestante && (
-                    <span className="text-yellow-400 flex items-center gap-1">
-                      <FaClock /> Desbloqueia em {tempoRestante}
-                    </span>
-                  )}
+                  {m.status === "Bloqueada" &&
+                    m.id === nextMissionId &&
+                    tempoRestante && (
+                      <span className="text-yellow-400 flex items-center gap-1">
+                        <FaClock /> Desbloqueia em {tempoRestante}
+                      </span>
+                    )}
 
                   {m.status === "Concluída" && (
                     <span className="text-green-400 font-medium">✅ Concluída</span>
@@ -244,7 +241,6 @@ const userId = userData?.id || 1;
         </main>
       </div>
 
-      {/* Modal */}
       <AnimatePresence>
         {showModal && selectedMission && (
           <MissionModal
