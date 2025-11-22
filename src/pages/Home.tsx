@@ -86,6 +86,7 @@ const MOTIVATIONS = [
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [summary, setSummary] = useState<SummaryResponse | null>(null);
   const [weeklyData, setWeeklyData] = useState(DEFAULT_WEEKLY);
   const [metrics, setMetrics] = useState<Metric[]>([]);
@@ -314,10 +315,10 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white">
-      <Sidebar />
+<Sidebar onToggle={setSidebarCollapsed} />
 
       {/* conteúdo principal */}
-      <div className="flex-1 flex flex-col ml-20 md:ml-64">
+     <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarCollapsed ? "ml-20" : "ml-64"}`}>
         <Navbar />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">

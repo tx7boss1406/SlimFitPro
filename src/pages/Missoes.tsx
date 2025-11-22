@@ -24,6 +24,7 @@ interface Missao {
 }
 
 export default function Missoes() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [missoes, setMissoes] = useState<Missao[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMission, setSelectedMission] = useState<Missao | null>(null);
@@ -37,12 +38,16 @@ export default function Missoes() {
 
   const fetchMissoes = async () => {
     try {
-      const res = await fetch(`https://slimfitpro-backend.onrender.com/missions/user/${userId}`);
+      const res = await fetch(
+        `https://slimfitpro-backend.onrender.com/missions/user/${userId}`
+      );
       const data = await res.json();
 
       setMissoes(data);
 
-      const ultimaConcluidaIndex = data.findIndex((m: Missao) => m.status === "Concluída");
+      const ultimaConcluidaIndex = data.findIndex(
+        (m: Missao) => m.status === "Concluída"
+      );
       const proxima = data[ultimaConcluidaIndex + 1];
       if (proxima && proxima.unlockAvailableAt) {
         setNextMissionId(proxima.id);
@@ -82,7 +87,8 @@ export default function Missoes() {
     if (!proxima?.unlockAvailableAt) return;
 
     const interval = setInterval(() => {
-      const diff = new Date(proxima.unlockAvailableAt!).getTime() - Date.now();
+      const diff =
+        new Date(proxima.unlockAvailableAt!).getTime() - Date.now();
 
       if (diff <= 0) {
         setMissoes((prev) =>
@@ -96,7 +102,9 @@ export default function Missoes() {
       }
 
       const horas = Math.floor(diff / (1000 * 60 * 60));
-      const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const minutos = Math.floor(
+        (diff % (1000 * 60 * 60)) / (1000 * 60)
+      );
       const segundos = Math.floor((diff % (1000 * 60)) / 1000);
 
       setTempoRestante(
@@ -136,8 +144,14 @@ export default function Missoes() {
         />
       )}
 
-      <Sidebar />
-      <div className="flex-1 flex flex-col ml-20 md:ml-64">
+      <Sidebar onToggle={setSidebarCollapsed} />
+
+      {/* 🔥 AQUI ESTÁ A CORREÇÃO */}
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          sidebarCollapsed ? "ml-20" : "ml-64"
+        }`}
+      >
         <Navbar />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
@@ -195,7 +209,9 @@ export default function Missoes() {
                 }`}
               >
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-lg font-semibold text-white">{m.title}</h3>
+                  <h3 className="text-lg font-semibold text-white">
+                    {m.title}
+                  </h3>
                   {m.status === "Concluída" ? (
                     <FaCheckCircle className="text-green-400 text-xl" />
                   ) : m.status === "Disponível" ? (
@@ -219,7 +235,9 @@ export default function Missoes() {
                     )}
 
                   {m.status === "Concluída" && (
-                    <span className="text-green-400 font-medium">✅ Concluída</span>
+                    <span className="text-green-400 font-medium">
+                      ✅ Concluída
+                    </span>
                   )}
 
                   {m.status === "Disponível" && (
@@ -247,7 +265,9 @@ export default function Missoes() {
             isOpen={showModal}
             onClose={() => setShowModal(false)}
             mission={selectedMission}
-            onComplete={() => handleConcluir(selectedMission.id)}
+            onComplete={() =>
+              handleConcluir(selectedMission.id)
+            }
           />
         )}
       </AnimatePresence>
