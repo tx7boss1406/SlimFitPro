@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import BottomBar from "../components/BottomBar";
 import ProfileCard from "../components/ProfileCard";
 import StatCard from "../components/StatCard";
 import BadgeList from "../components/BadgeList";
@@ -16,7 +16,6 @@ type User = {
   level: number;
   xp: number;
   unlocked?: string[] | null;
-  // add other fields returned by backend
 };
 
 const base = axios.create({
@@ -53,7 +52,6 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     fetchProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading)
@@ -74,92 +72,93 @@ const ProfilePage: React.FC = () => {
     );
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-[#1E1E2E] to-[#151523] text-white">
-      <Sidebar />
-      <div className="flex-1 p-6 lg:p-10">
-        <Navbar />
+    <div className="min-h-screen bg-gradient-to-b from-[#1E1E2E] to-[#151523] text-white pb-20">
+      <Navbar />
 
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-6xl mx-auto"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left column: Profile card */}
-            <div className="col-span-1">
-              <ProfileCard user={user!} onUpdated={fetchProfile} />
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-6xl mx-auto p-6 lg:p-10"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Profile Card */}
+          <div className="col-span-1">
+            <ProfileCard user={user!} onUpdated={fetchProfile} />
+          </div>
+
+          {/* Stats + progress */}
+          <div className="col-span-1 lg:col-span-2 space-y-6">
+            <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold">Progresso</h2>
+                <div className="text-sm text-gray-400">Nível {user?.level}</div>
+              </div>
+
+              <div className="mt-4">
+                <ProgressBar level={user!.level} xp={user!.xp} />
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <StatCard
+                  title="Missões concluídas"
+                  value={0} // mantém sua lógica original
+                  hint="Total concluídas"
+                  accent="violet"
+                />
+                <StatCard
+                  title="Recompensas"
+                  value={(user!.unlocked && user!.unlocked.length) || 0}
+                  hint="Desbloqueadas"
+                  accent="teal"
+                />
+                <StatCard
+                  title="XP"
+                  value={user!.xp}
+                  hint="XP atual"
+                  accent="amber"
+                />
+              </div>
             </div>
 
-            {/* Middle: Stats + progress */}
-            <div className="col-span-1 lg:col-span-2 space-y-6">
-              <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Progresso</h2>
-                  <div className="text-sm text-gray-400">Nível {user?.level}</div>
-                </div>
+            {/* Badges */}
+            <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
+              <h3 className="text-lg font-semibold mb-4">Emblemas & Recompensas</h3>
+              <BadgeList unlocked={user!.unlocked || []} />
+            </div>
 
-                <div className="mt-4">
-                  <ProgressBar level={user!.level} xp={user!.xp} />
-                </div>
-
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <StatCard
-                    title="Missões concluídas"
-                    value={/* if backend returns, change */ 0}
-                    hint="Total concluídas"
-                    accent="violet"
-                  />
-                  <StatCard
-                    title="Recompensas"
-                    value={(user!.unlocked && user!.unlocked.length) || 0}
-                    hint="Desbloqueadas"
-                    accent="teal"
-                  />
-                  <StatCard
-                    title="XP"
-                    value={user!.xp}
-                    hint="XP atual"
-                    accent="amber"
-                  />
-                </div>
-              </div>
-
-              {/* Badges */}
-              <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
-                <h3 className="text-lg font-semibold mb-4">Emblemas & Recompensas</h3>
-                <BadgeList unlocked={user!.unlocked || []} />
-              </div>
-
-              {/* Activity / quick actions (placeholders actionable) */}
-              <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
-                <h3 className="text-lg font-semibold mb-4">Ações rápidas</h3>
-                <div className="flex gap-3 flex-wrap">
-                  <button
-                    onClick={() => window.location.assign("/missoes")}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow hover:scale-[1.01] transform transition"
-                  >
-                    Ver Missões
-                  </button>
-                  <button
-                    onClick={() => window.location.assign("/recompensas")}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-400 shadow hover:scale-[1.01] transform transition"
-                  >
-                    Ver Recompensas
-                  </button>
-                  <button
-                    onClick={() => alert("Exportando dados...")}
-                    className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-700"
-                  >
-                    Exportar dados
-                  </button>
-                </div>
+            {/* Quick actions */}
+            <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
+              <h3 className="text-lg font-semibold mb-4">Ações rápidas</h3>
+              <div className="flex gap-3 flex-wrap">
+                <button
+                  onClick={() => window.location.assign("/missoes")}
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow hover:scale-[1.01] transition"
+                >
+                  Ver Missões
+                </button>
+                <button
+                  onClick={() => window.location.assign("/recompensas")}
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-400 shadow hover:scale-[1.01] transition"
+                >
+                  Ver Recompensas
+                </button>
+                <button
+                  onClick={() => alert("Exportando dados...")}
+                  className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-700"
+                >
+                  Exportar dados
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="mt-6 text-right text-sm text-gray-500">Última sincronização: agora</div>
-        </motion.div>
-      </div>
+        <div className="mt-6 text-right text-sm text-gray-500">
+          Última sincronização: agora
+        </div>
+      </motion.div>
+
+      <BottomBar />
     </div>
   );
 };

@@ -4,36 +4,43 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Missoes from "./pages/Missoes";
 import Receitas from "./pages/Receitas";
-import Recompensas from "./pages/Recompensas"; // ⚡ Novo import adicionado
-import Dicas from "./pages/Dicas"; // ⚡ Import da nova página de Dicas
-import Relatorios from "./pages/Relatorios"; // ✅ IMPORTADO AGORA
-import Profile from "./pages/Profile"; // ⚡ Import da nova seção de perfil
+import Recompensas from "./pages/Recompensas";
+// import Dicas from "./pages/Dicas";  // ❌ removido pois não existe
+import Relatorios from "./pages/Relatorios";
+import Profile from "./pages/Profile";
+import BottomBar from "./components/BottomBar";
+import { useLocation, Outlet } from "react-router-dom";
+
+const LoggedArea = () => {
+  const location = useLocation();
+  const hideOn = ["/", "/register"];
+  const shouldHide = hideOn.includes(location.pathname);
+
+  return (
+    <>
+      <Outlet />
+      {!shouldHide && <BottomBar />}
+    </>
+  );
+};
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Página inicial → Login */}
         <Route path="/" element={<Login />} />
-
-        {/* Cadastro */}
         <Route path="/register" element={<Register />} />
 
-        {/* Tela principal do app (após login) */}
-        <Route path="/home" element={<Home />} />
-
-        {/* Outras telas */}
-        <Route path="/missoes" element={<Missoes />} />
-        <Route path="/receitas" element={<Receitas />} />
-        <Route path="/recompensas" element={<Recompensas />} /> {/* ⚡ Nova rota */}
-        <Route path="/dicas" element={<Dicas />} /> {/* ⚡ Rota adicionada para Dicas */}
-
-        {/* ✅ Rota do Relatórios */}
-        <Route path="/relatorios" element={<Relatorios />} />
-
-        {/* ⚡ Nova rota do Perfil */}
-       <Route path="/perfil" element={<Profile />} />
-
+        {/* Rotas protegidas com BottomBar */}
+        <Route element={<LoggedArea />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/missoes" element={<Missoes />} />
+          <Route path="/receitas" element={<Receitas />} />
+          <Route path="/recompensas" element={<Recompensas />} />
+          {/* <Route path="/dicas" element={<Dicas />} /> */} {/* ❌ desativado */}
+          <Route path="/relatorios" element={<Relatorios />} />
+          <Route path="/perfil" element={<Profile />} />
+        </Route>
       </Routes>
     </Router>
   );

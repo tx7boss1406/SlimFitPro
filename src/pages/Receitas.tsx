@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { XCircle } from "lucide-react";
+import BottomBar from "../components/BottomBar"; // ADICIONADO
 
 type Receita = {
   id: number;
@@ -926,15 +927,14 @@ const Receitas: React.FC = () => {
   );
 
   return (
-    <>
-     <motion.section
-  initial={{ opacity: 0, y: 10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5 }}
-  className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden"
->
-
-
+    <div className="min-h-screen bg-gradient-to-b from-[#1E1E2E] to-[#151523] text-white p-6 pb-24">
+      {/* GRID DE RECEITAS */}
+      <motion.section
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden"
+      >
         {receitas.map((receita) => (
           <motion.div
             key={receita.id}
@@ -982,21 +982,14 @@ const Receitas: React.FC = () => {
               transition={{ duration: 0.3 }}
               className="relative bg-gray-900/90 border border-yellow-400/20 rounded-2xl max-w-lg w-full text-white shadow-lg"
             >
-              {/* Div interna com rolagem sem scrollbar */}
               <div
                 className="max-h-[80vh] overflow-y-auto p-6"
                 style={{
                   scrollbarWidth: "none",
-                  msOverflowStyle: "none",
+                  msOverflowStyle: "none"
                 }}
               >
-                <style>
-                  {`
-                    div::-webkit-scrollbar {
-                      display: none;
-                    }
-                  `}
-                </style>
+                <style>{`div::-webkit-scrollbar { display: none; }`}</style>
 
                 <button
                   onClick={() => setReceitaSelecionada(null)}
@@ -1037,35 +1030,46 @@ const Receitas: React.FC = () => {
                     <li key={i}>{passo}</li>
                   ))}
                 </ol>
+
                 {receitaSelecionada.rendimento && (
-  <p className="text-gray-300 mt-4"><strong>Rendimento:</strong> {receitaSelecionada.rendimento}</p>
-)}
+                  <p className="text-gray-300 mt-4">
+                    <strong>Rendimento:</strong> {receitaSelecionada.rendimento}
+                  </p>
+                )}
 
-{receitaSelecionada.beneficios && (
-  <p className="text-gray-300 mt-2"><strong>Benefícios:</strong> {receitaSelecionada.beneficios}</p>
-)}
+                {receitaSelecionada.beneficios && (
+                  <p className="text-gray-300 mt-2">
+                    <strong>Benefícios:</strong> {receitaSelecionada.beneficios}
+                  </p>
+                )}
 
-{receitaSelecionada.dicas && (
-  <>
-    <h3 className="text-lg font-semibold text-yellow-200 mt-4 mb-2">Dicas Extras / Variações:</h3>
-    <ul className="list-disc list-inside text-gray-300 space-y-1">
-      {receitaSelecionada.dicas.map((dica, i) => (
-        <li key={i}>{dica}</li>
-      ))}
-    </ul>
-  </>
-)}
+                {receitaSelecionada.dicas && (
+                  <>
+                    <h3 className="text-lg font-semibold text-yellow-200 mt-4 mb-2">
+                      Dicas Extras / Variações:
+                    </h3>
+                    <ul className="list-disc list-inside text-gray-300 space-y-1">
+                      {receitaSelecionada.dicas.map((dica, i) => (
+                        <li key={i}>{dica}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
 
-{receitaSelecionada.resumoVisual && (
-  <p className="text-gray-300 mt-4">{receitaSelecionada.resumoVisual}</p>
-)}
-
+                {receitaSelecionada.resumoVisual && (
+                  <p className="text-gray-300 mt-4">
+                    {receitaSelecionada.resumoVisual}
+                  </p>
+                )}
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+
+      {/* ADICIONADO */}
+      <BottomBar />
+    </div>
   );
 };
 

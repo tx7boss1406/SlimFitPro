@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaLock, FaCheckCircle, FaBolt, FaClock } from "react-icons/fa";
 import Confetti from "react-confetti";
-import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import MissionModal from "../components/MissionModal";
 
@@ -24,7 +23,6 @@ interface Missao {
 }
 
 export default function Missoes() {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [missoes, setMissoes] = useState<Missao[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMission, setSelectedMission] = useState<Missao | null>(null);
@@ -133,7 +131,7 @@ export default function Missoes() {
   const progressoGeral = (concluidas / missoes.length) * 100;
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-950 text-white">
       {showConfetti && (
         <Confetti
           width={window.innerWidth}
@@ -144,120 +142,112 @@ export default function Missoes() {
         />
       )}
 
-      <Sidebar onToggle={setSidebarCollapsed} />
+      {/* REMOVIDO SIDEBAR — mantém só o conteúdo */}
+      <Navbar />
 
-      {/* 🔥 AQUI ESTÁ A CORREÇÃO */}
-      <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${
-          sidebarCollapsed ? "ml-20" : "ml-64"
-        }`}
-      >
-        <Navbar />
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8"
+        >
+          <h2 className="text-2xl md:text-4xl font-extrabold text-yellow-400 mb-3">
+            🎯 Missões Diárias
+          </h2>
+          <p className="text-gray-400 text-sm md:text-base">
+            Complete missões e desbloqueie recompensas exclusivas!
+          </p>
+        </motion.div>
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8"
-          >
-            <h2 className="text-2xl md:text-4xl font-extrabold text-yellow-400 mb-3">
-              🎯 Missões Diárias
-            </h2>
-            <p className="text-gray-400 text-sm md:text-base">
-              Complete missões e desbloqueie recompensas exclusivas!
+        <div className="max-w-3xl mx-auto mb-10 p-4 md:p-6 bg-gray-900/70 border border-yellow-400/10 rounded-2xl shadow-sm backdrop-blur-sm">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm text-gray-300">
+              Missões concluídas:{" "}
+              <span className="text-yellow-400 font-semibold">
+                {concluidas} / {missoes.length}
+              </span>
             </p>
-          </motion.div>
-
-          <div className="max-w-3xl mx-auto mb-10 p-4 md:p-6 bg-gray-900/70 border border-yellow-400/10 rounded-2xl shadow-sm backdrop-blur-sm">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-gray-300">
-                Missões concluídas:{" "}
-                <span className="text-yellow-400 font-semibold">
-                  {concluidas} / {missoes.length}
-                </span>
-              </p>
-            </div>
-            <div className="w-full h-3 bg-gray-800 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-yellow-400 to-yellow-200"
-                style={{ width: `${progressoGeral}%` }}
-                initial={{ width: 0 }}
-                animate={{ width: `${progressoGeral}%` }}
-                transition={{ duration: 1 }}
-              />
-            </div>
           </div>
+          <div className="w-full h-3 bg-gray-800 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-gradient-to-r from-yellow-400 to-yellow-200"
+              style={{ width: `${progressoGeral}%` }}
+              initial={{ width: 0 }}
+              animate={{ width: `${progressoGeral}%` }}
+              transition={{ duration: 1 }}
+            />
+          </div>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-            {missoes.map((m, index) => (
-              <motion.div
-                key={m.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() =>
-                  m.status !== "Bloqueada" &&
-                  (setSelectedMission(m), setShowModal(true))
-                }
-                className={`relative p-5 rounded-2xl border shadow-md hover:scale-[1.02] cursor-pointer transition-all duration-300 ${
-                  m.status === "Concluída"
-                    ? "bg-gradient-to-br from-green-500/10 to-green-400/5 border-green-400/40"
-                    : m.status === "Disponível"
-                    ? "bg-gradient-to-br from-yellow-400/10 to-yellow-400/5 border-yellow-400/20"
-                    : "bg-gradient-to-br from-gray-800/70 to-gray-900/80 border-gray-700/40"
-                }`}
-              >
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-lg font-semibold text-white">
-                    {m.title}
-                  </h3>
-                  {m.status === "Concluída" ? (
-                    <FaCheckCircle className="text-green-400 text-xl" />
-                  ) : m.status === "Disponível" ? (
-                    <FaBolt className="text-yellow-400 text-xl animate-pulse" />
-                  ) : (
-                    <FaLock className="text-gray-600 text-xl" />
-                  )}
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+          {missoes.map((m, index) => (
+            <motion.div
+              key={m.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              onClick={() =>
+                m.status !== "Bloqueada" &&
+                (setSelectedMission(m), setShowModal(true))
+              }
+              className={`relative p-5 rounded-2xl border shadow-md hover:scale-[1.02] cursor-pointer transition-all duration-300 ${
+                m.status === "Concluída"
+                  ? "bg-gradient-to-br from-green-500/10 to-green-400/5 border-green-400/40"
+                  : m.status === "Disponível"
+                  ? "bg-gradient-to-br from-yellow-400/10 to-yellow-400/5 border-yellow-400/20"
+                  : "bg-gradient-to-br from-gray-800/70 to-gray-900/80 border-gray-700/40"
+              }`}
+            >
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-semibold text-white">
+                  {m.title}
+                </h3>
+                {m.status === "Concluída" ? (
+                  <FaCheckCircle className="text-green-400 text-xl" />
+                ) : m.status === "Disponível" ? (
+                  <FaBolt className="text-yellow-400 text-xl animate-pulse" />
+                ) : (
+                  <FaLock className="text-gray-600 text-xl" />
+                )}
+              </div>
 
-                <p className="text-sm text-gray-400 line-clamp-2 mb-3">
-                  {m.description}
-                </p>
+              <p className="text-sm text-gray-400 line-clamp-2 mb-3">
+                {m.description}
+              </p>
 
-                <div className="text-xs text-gray-400 flex justify-between items-center">
-                  {m.status === "Bloqueada" &&
-                    m.id === nextMissionId &&
-                    tempoRestante && (
-                      <span className="text-yellow-400 flex items-center gap-1">
-                        <FaClock /> Desbloqueia em {tempoRestante}
-                      </span>
-                    )}
-
-                  {m.status === "Concluída" && (
-                    <span className="text-green-400 font-medium">
-                      ✅ Concluída
+              <div className="text-xs text-gray-400 flex justify-between items-center">
+                {m.status === "Bloqueada" &&
+                  m.id === nextMissionId &&
+                  tempoRestante && (
+                    <span className="text-yellow-400 flex items-center gap-1">
+                      <FaClock /> Desbloqueia em {tempoRestante}
                     </span>
                   )}
 
-                  {m.status === "Disponível" && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedMission(m);
-                        setShowModal(true);
-                      }}
-                      className="px-4 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg transition"
-                    >
-                      Ver Missão
-                    </button>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </main>
-      </div>
+                {m.status === "Concluída" && (
+                  <span className="text-green-400 font-medium">
+                    ✅ Concluída
+                  </span>
+                )}
+
+                {m.status === "Disponível" && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedMission(m);
+                      setShowModal(true);
+                    }}
+                    className="px-4 py-1.5 bg-yellow-400 hover:bg-yellow-300 text-black font-semibold rounded-lg transition"
+                  >
+                    Ver Missão
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </main>
 
       <AnimatePresence>
         {showModal && selectedMission && (
