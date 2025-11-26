@@ -28,6 +28,7 @@ const MOTIVATIONS = [
   "O progresso é silencioso, mas poderoso.",
   "Disciplina supera motivação.",
 ];
+const userId = localStorage.getItem("userId");
 
 const Home = () => {
   const navigate = useNavigate();
@@ -41,13 +42,21 @@ const Home = () => {
   const [motivation, setMotivation] = useState(MOTIVATIONS[0]);
   const [macros, setMacros] = useState<any>(null);
 
+
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/home/summary`,
-        { withCredentials: true }
-      );
-      setSummary(res.data.summary);
+      const token = localStorage.getItem("token");
+
+    const res = await axios.get(
+  `${import.meta.env.VITE_API_URL}/users/${userId}/summary`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
+setSummary(res.data);
       setWeeklyData(res.data.weeklyXp);
       setMetrics(res.data.metrics);
       setActivities(res.data.activities);
@@ -65,7 +74,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
+<div className="min-h-screen flex flex-col bg-gradient-to-br from-black via-gray-950 to-black">
       <Navbar />
 
       <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-28 space-y-8">
@@ -75,7 +84,7 @@ const Home = () => {
             <h2 className="text-3xl font-extrabold text-yellow-400">
               👋 Olá,{" "}
               <span className="text-white">
-                {summary?.name ?? "Atleta"}
+                {summary?.name}
               </span>
             </h2>
             <p className="text-sm text-gray-400 mt-1">
@@ -111,8 +120,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="p-6 rounded-2xl bg-gray-900/60 border border-yellow-400/8"
-            >
+className="p-6 rounded-2xl bg-gray-900/60 border border-yellow-400/10 shadow-[0_0_20px_rgba(250,204,21,0.06)] backdrop-blur-sm"            >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-md bg-yellow-400/10 text-yellow-300">
@@ -229,8 +237,10 @@ const Home = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="p-6 rounded-2xl bg-gray-900/60 
-                           border border-yellow-400/8"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="p-6 rounded-2xl bg-gray-900/50 border border-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.05)] backdrop-blur-md"
+
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -282,8 +292,11 @@ const Home = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="p-6 rounded-2xl bg-gray-900/60 
-                           border border-yellow-400/8"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+
+              className="p-6 rounded-2xl bg-gray-900/50 border border-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.05)] backdrop-blur-md"
+
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -336,8 +349,11 @@ const Home = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="p-6 rounded-2xl bg-gray-900/60 
-                           border border-yellow-400/8"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+
+              className="p-6 rounded-2xl bg-gray-900/50 border border-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.05)] backdrop-blur-md"
+
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -385,7 +401,10 @@ const Home = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-2 p-6 rounded-2xl bg-gray-900/60 border border-yellow-400/8"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+
+className="p-6 rounded-2xl bg-gray-900/50 border border-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.05)] backdrop-blur-md"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-white flex items-center gap-2">
@@ -461,7 +480,10 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-6 rounded-2xl bg-gray-900/60 border border-yellow-400/8"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+
+className="p-6 rounded-2xl bg-gray-900/50 border border-yellow-400/10 shadow-[0_0_15px_rgba(250,204,21,0.05)] backdrop-blur-md"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -527,7 +549,10 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-6 rounded-2xl bg-gradient-to-br from-yellow-400/6 via-yellow-400/4 to-yellow-400/6 border border-yellow-400/10"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+
+             className="p-6 rounded-2xl bg-gradient-to-br from-yellow-500/10 via-yellow-400/10 to-yellow-500/10 border border-yellow-300/20 shadow-[0_0_25px_rgba(250,204,21,0.15)]"
             >
               <div className="flex items-center justify-between">
                 <h4 className="text-lg font-semibold text-white flex items-center gap-2">
