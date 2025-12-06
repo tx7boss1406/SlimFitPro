@@ -129,25 +129,25 @@ const ProfilePage: React.FC = () => {
             {/* Quick actions */}
             <div className="bg-gradient-to-b from-[#2A2A3C] to-[#222233] rounded-2xl p-6 shadow-xl border border-[#3A3A4C]">
               <h3 className="text-lg font-semibold mb-4">Ações rápidas</h3>
-              <div className="flex gap-3 flex-wrap">
+            <div className="flex flex-wrap gap-3 w-full max-sm:flex-col overflow-hidden">
                 <button
                   onClick={() => window.location.assign("/missoes")}
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow hover:scale-[1.01] transition"
+                  className="flex-1 min-w-[140px] text-center px-4 py-2 rounded-lg bg-gradient-to-r  from-indigo-600 to-violet-600 shadow hover:scale-[1.01] transition"
                 >
                   Ver Missões
                 </button>
                 <button
                   onClick={() => window.location.assign("/recompensas")}
-                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-400 shadow hover:scale-[1.01] transition"
+                  className="flex-1 min-w-[140px] text-center px-4 py-2 rounded-lg bg-gradient-to-r  from-emerald-500 to-teal-400 shadow hover:scale-[1.01] transition"
                 >
                   Ver Recompensas
                 </button>
-                <button
-                  onClick={() => alert("Exportando dados...")}
-                  className="px-4 py-2 rounded-lg bg-gray-800 border border-gray-700"
-                >
-                  Exportar dados
-                </button>
+               <button
+  onClick={() => alert("Exportando dados...")}
+  className="flex-1 min-w-[140px] text-center px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 hover:scale-[1.01] transition"
+>
+  Exportar dados
+</button>
               </div>
             </div>
           </div>

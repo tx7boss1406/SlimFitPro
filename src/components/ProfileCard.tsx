@@ -100,7 +100,8 @@ const ProfileCard: React.FC<Props> = ({ user, onUpdated }) => {
             )}
           </div>
 
-          <label className="absolute bottom-0 right-0 bg-gray-800 p-2 rounded-full border border-gray-700 cursor-pointer" title="Alterar foto">
+          <label className="absolute bottom-2 right-2 bg-gray-800 p-2 rounded-full border border-gray-700 cursor-pointer" title="Alterar foto">
+
             <Camera size={16} />
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
           </label>
